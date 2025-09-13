@@ -82,13 +82,12 @@ pipeline {
         }
 
         stage('Docker Login') {
-            steps {
-                withCredentials([string(credentialsId: 'dockerId', variable: 'Dockerpwd')]) {
-                    sh 'docker login -u sandhiyalaxmi -p S@ndhiya955'
-
-                }
-            }
+    steps {
+        withCredentials([usernamePassword(credentialsId: 'dockerId', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
+            sh 'echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin'
         }
+    }
+}
 
         stage('Docker Push') {
             steps {
